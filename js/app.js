@@ -26,7 +26,6 @@ Enemy.prototype.update = function(dt) {
       this.x = -70;
     }
 
-    // CHANGE Check for collision with walls or enemies
     checkCollision(this);
 };
 
@@ -46,7 +45,7 @@ var Player = function(x , y, speed) {
 };
 
 Player.prototype.update = function() {
- // function not needed right now
+
 }
 
 // Draw player on canvas
@@ -59,22 +58,22 @@ Player.prototype.render = function() {
 
 Player.prototype.handleInput = function(keyPress) {
   if (keyPress == 'left') {
-    player.x -= player.speed;
+    this.x -= this.speed;
   }
   if (keyPress =='up') {
-    player.y -= player.speed - 40;
+    this.y -= this.speed - 25;
   }
   if (keyPress == 'right') {
-    player.x += player.speed;
+    this.x += this.speed;
   }
   if (keyPress == 'down') {
-    player.y += player.speed - 40;
+    this.y += this.speed - 25;
   }
   console.log('keyPress is: ' + keyPress);
 };
 
 // Player score count function
-var displayScoreLevel = function(aScore, aLevel) {
+  var displayScoreLevel = function(aScore, aLevel) {
   var canvas = document.getElementsByTagName('canvas');
   var firstCanvasTag = canvas[0];
 
@@ -151,6 +150,8 @@ var increaseDifficulty = function(numEnemies) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+// create score, gameLevel and enemy var
+
 var allEnemies = [];
 var player = new Player(170, 390, 50);
 var score = 0;
