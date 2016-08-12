@@ -27,6 +27,7 @@ Enemy.prototype.update = function(dt) {
     }
 
     checkCollision(this);
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -42,6 +43,7 @@ var Player = function(x , y, speed) {
   this.y = y;
   this.speed = speed;
   this.sprite = 'images/ousooners.png';
+
 };
 
 Player.prototype.update = function() {
@@ -52,7 +54,6 @@ Player.prototype.update = function() {
 
 Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-  displayScoreLevel(score, gameLevel);
 
 };
 
@@ -69,17 +70,36 @@ Player.prototype.handleInput = function(keyPress) {
   if (keyPress == 'down') {
     this.y += this.speed - 25;
   }
+
   console.log('keyPress is: ' + keyPress);
 };
 
-// Player score count function
-  var displayScoreLevel = function(aScore, aLevel) {
-  var canvas = document.getElementsByTagName('canvas');
-  var firstCanvasTag = canvas[0];
+//check if player has won game by reaching top
 
-  // Update player score by adding it to div element
-  scoreLevelDiv.innerHTML = 'Score: ' + aScore + ' / ' + 'Level: ' + aLevel;
-  document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
+Player.prototype.checkWin = function(checkWin) {
+
+if(this.y + -45 <= 0) {
+ this.x = 170;
+ this.y = 390;
+ window.alert('Good work!');
+
+}
+// keep player on the canvas
+// OU overhangs on top and dispares on right
+
+  if(this.y > 405 ) { // bottom
+ this.y = 405;
+}
+if (this.y < 2.5) { // top
+ this.y = 2.5;
+}
+if (this.x > 331) { // right side
+ this.x = 331;
+}
+if (this.x < 2.5) { // left side
+ this.x = 2.5;
+  }
+
 };
 
 var checkCollision = function(anEnemy) {
@@ -94,69 +114,14 @@ var checkCollision = function(anEnemy) {
       player.y = 450;
     }
 
-    // check if player has won game by reaching top
-    // Add 1 point if player wins, increase difficulty if with every pass score
-
-    if(player.y + -45 <= 0) {
-      player.x = 170;
-      player.y = 390;
-      window.alert('Good work!');
-
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, 505, 171);
-
-      score += 1;
-      gameLevel += 1;
-      console.log('current score: ' + score + ', current level: ' + gameLevel);
-      increaseDifficulty(score);
-
-
-    }
-    // keep player on the canvas
-    // OU overhangs on top and dispares on right
-
-    if(player.y > 405 ) { // bottom
-      player.y = 405;
-    }
-    if (player.y < 2.5) { // top
-      player.y = 2.5;
-    }
-    if (player.x > 331) { // right side
-      player.x = 331;
-    }
-    if (player.x < 2.5) { // left side
-      player.x = 2.5;
-    }
-
-};
-
-
-// Add number of enemies as player score increases
-
-var increaseDifficulty = function(numEnemies) {
-// clear all enemies from last canvas
-
-  allEnemies.length = 0;
-
-// create/load  new group of enimies
-  for (var i = 0; i <= numEnemies; i++) {
-    var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
-
-    allEnemies.push(enemy);
-  }
-
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-// create score, gameLevel and enemy var
 
 var allEnemies = [];
 var player = new Player(170, 390, 50);
-var score = 0;
-var gameLevel = 1;
-var scoreLevelDiv = document.createElement('div');
 var enemy = new Enemy(0, Math.random() * 197 + 65, Math.random() * 256);
 
 allEnemies.push(enemy);
@@ -172,4 +137,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    player.checkWin();
 });
