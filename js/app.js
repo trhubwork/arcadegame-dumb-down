@@ -35,6 +35,20 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+var checkCollision = function(anEnemy) {
+  // Collision check for eney on player
+  if (
+    player.y + 126 >= anEnemy.y + 85
+    && player.x + 35 <= anEnemy.x + 92
+    && player.y + 70 <= anEnemy.y + 124
+    && player.x + 79 >= anEnemy.x + 9) {
+      console.log('collided');
+      player.x = 182;
+      player.y = 450;
+    }
+
+};
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -71,6 +85,22 @@ Player.prototype.handleInput = function(keyPress) {
     this.y += this.speed - 25;
   }
 
+  // keep player on the canvas
+  // OU overhangs on top and dispares on right
+
+    if(this.y > 405 ) { // bottom
+   this.y = 405;
+  }
+  if (this.y < 2.5) { // top
+   this.y = 2.5;
+  }
+  if (this.x > 331) { // right side
+   this.x = 331;
+  }
+  if (this.x < 2.5) { // left side
+   this.x = 2.5;
+    }
+
   console.log('keyPress is: ' + keyPress);
 };
 
@@ -84,37 +114,10 @@ if(this.y + -45 <= 0) {
  window.alert('Good work!');
 
 }
-// keep player on the canvas
-// OU overhangs on top and dispares on right
-
-  if(this.y > 405 ) { // bottom
- this.y = 405;
-}
-if (this.y < 2.5) { // top
- this.y = 2.5;
-}
-if (this.x > 331) { // right side
- this.x = 331;
-}
-if (this.x < 2.5) { // left side
- this.x = 2.5;
-  }
 
 };
 
-var checkCollision = function(anEnemy) {
-  // Collision check for eney on player
-  if (
-    player.y + 126 >= anEnemy.y + 85
-    && player.x + 35 <= anEnemy.x + 92
-    && player.y + 70 <= anEnemy.y + 124
-    && player.x + 79 >= anEnemy.x + 9) {
-      console.log('collided');
-      player.x = 182;
-      player.y = 450;
-    }
 
-};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -122,7 +125,7 @@ var checkCollision = function(anEnemy) {
 
 var allEnemies = [];
 var player = new Player(170, 390, 50);
-var enemy = new Enemy(0, Math.random() * 197 + 65, Math.random() * 256);
+var enemy = new Enemy(0, Math.random() * 135 + 65, Math.random() * 216, Math.random() * 256, Math.random() * 297);
 
 allEnemies.push(enemy);
 
